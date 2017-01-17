@@ -24,4 +24,9 @@ dividedBy' num denom  = go (abs num) (abs denom) 0
 dividedBy :: Integer -> Integer -> DividedResult Integer
 dividedBy _ 0 = DividedByZero
 dividedBy num denom = case (dividedBy' num denom) of
-                           (x, y) -> Result x
+                           (x, _) -> Result x
+
+mc91 :: Integer -> Integer
+mc91 n
+  | n > 100   = n - 10
+  | otherwise = mc91 $ mc91 $ n + 11
