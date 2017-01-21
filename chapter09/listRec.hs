@@ -13,6 +13,6 @@ splitAt' num xs
   | num > length xs = (xs, [])
   | otherwise       = go num ([], xs)
   where
-    go n (ys, []) = (ys, [])
+    go _ ([], []) = ([], [])
     go 0 (ys, zs) = (reverse ys, zs)
     go n (ys, z:zs) = go (n - 1) (z:ys, zs)
