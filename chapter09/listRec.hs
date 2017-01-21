@@ -8,9 +8,11 @@ drop' _ []     = []
 drop' 0 xs     = xs
 drop' n (x:xs) = drop' (n - 1) xs
 
-splitAt' :: Eq a => Int -> [a] -> ([a], [a])
-splitAt' num xs = go num ([], xs)
-  where go n (ys, zs)
-          | zs == []  = (ys, zs)
-          | n == 0    = (reverse ys, zs)
-          | otherwise = go (n - 1) ((head zs):ys, tail zs)
+splitAt'' :: Int -> ([a], [a]) -> ([a], [a])
+splitAt'' _ (xs, []) = (xs, [])
+splitAt'' 0 (xs, ys) = (reverse xs, ys)
+splitAt'' n (xs, y:ys) = splitAt'' (n - 1) (y:xs, ys)
+
+splitAt' :: Int -> [a] -> ([a], [a])
+splitAt' n xs = splitAt'' n ([], xs)
+
