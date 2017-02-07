@@ -31,15 +31,15 @@ squishAgain :: [[a]] -> [a]
 squishAgain = squishMap id
 
 myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
-myMaximumBy f xs = foldr (\x acc -> case f x acc of
+myMaximumBy f (x:xs) = foldr (\x acc -> case f x acc of
                            GT -> x
                            _  -> acc)
-                         (head xs)
-                         (tail xs)
+                         x
+                         xs
                       
 myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
-myMinimumBy f xs = foldr (\x acc -> case f x acc of
+myMinimumBy f (x:xs) = foldr (\x acc -> case f x acc of
                            LT -> x
                            _  -> acc)
-                         (head xs)
-                         (tail xs) 
+                         x
+                         xs 
