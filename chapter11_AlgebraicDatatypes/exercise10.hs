@@ -68,3 +68,9 @@ foldTree f z (Node left a right) =
 foldTree' _ z Leaf = z
 foldTree' f z (Node left a right) =
   f (foldTree f a left) (foldTree f z right)
+
+foldTree'' _ z Leaf = z
+foldTree'' f z (Node left a right) =
+  foldTree'' f (f a (foldTree'' f z left)) right
+
+--mapTree' :: (a -> b) -> BinaryTree a -> BinaryTree b
