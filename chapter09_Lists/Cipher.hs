@@ -13,7 +13,7 @@ shiftR shift n
 shiftL :: Int -> Int -> Int
 shiftL shift n
   | (n - shift) < 0 = (n - shift) + 26
-  | otherwise        = n - shift
+  | otherwise       = n - shift
 
 shift :: (Int -> Int -> Int) -> Int -> Char -> Char
 shift shifter n = chr . toUnicode . shifter n . toAlphaNum . ord
