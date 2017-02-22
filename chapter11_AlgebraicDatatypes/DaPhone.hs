@@ -33,3 +33,6 @@ reverseTaps (DaPhone xs) c
           getPresses c (d, s) = case elemIndex c s of
             Just x  -> (d, x + 1)
             Nothing -> (d, (length s) + 1)
+
+cellPhonesDead :: DaPhone -> String -> [(Digit, Presses)]
+cellPhonesDead phone = concat . map (reverseTaps phone)
