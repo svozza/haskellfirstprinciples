@@ -1,6 +1,13 @@
 import Data.Char
 import Data.List
-import Debug.Trace
+import Data.Function
+
+convo :: [String]
+convo = ["Wanna play 20 questions",
+         "Ya",
+         "U 1st haha",
+         "Lol ok. Have u ever tasted alcohol lol",
+         "Lol ya"]
 
 type Digit   = Char
 type Presses = Int
@@ -17,7 +24,6 @@ phone = DaPhone [('1', "")
                 ,('7', "PQRS")
                 ,('8', "TUV")
                 ,('9', "WXYZ")
-                ,('*', "")
                 ,('0', " ")
                 ,('#', ".,")]
 
@@ -36,3 +42,39 @@ reverseTaps (DaPhone xs) c
 
 cellPhonesDead :: DaPhone -> String -> [(Digit, Presses)]
 cellPhonesDead phone = concat . map (reverseTaps phone)
+
+fingerTaps :: [(Digit, Presses)] -> Presses
+fingerTaps = foldr (+) 0 . map snd
+
+largest :: [[a]] -> [a]
+largest = foldr (\x z -> if length x > length z
+                         then x
+                         else z)
+                []
+
+-- This is horrendously unsafe but Maybes are the focus of the next chapter
+mostPopularLetter :: String -> Char
+mostPopularLetter = head . largest . group . sort . filter isLetter
+
+costliestLetter :: String -> (Digit, Presses)
+costliestLetter s = (\(_, p) -> (letter, p)) $ getTaps $ reverseTaps phone letter
+  where
+    letter                         = mostPopularLetter s
+    getTaps [(d, p)]               = (d, p)
+    getTaps xs@[('*', p), (d, p')] = (d, fingerTaps xs)
+
+
+coolestLetter :: [String] -> Char
+coolestLetter = mostPopularLetter . concat
+
+splitOn :: Eq a => a -> [a] -> [[a]]
+splitOn c s = go c (reverse s) []
+  where go _ []     xs       = xs
+        go c (s:ss) []       = go c ss (if c == s then [] else [[s]])
+        go c (s:ss) (xs:xss) = go c ss (if c == s then []:xs:xss else (s:xs):xss)
+
+-- This is horrendously unsafe but Maybes are the focus of the next chapter
+coolestWord :: [String] -> String
+coolestWord = head . largest . group . sort . splitOn ' ' . intercalate " "
+
+       

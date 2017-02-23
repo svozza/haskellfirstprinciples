@@ -1,5 +1,6 @@
 import Data.Char
 import Data.List
+import Data.Bool
 
 isSubsequenceOf' :: (Eq a) => [a] -> [a] -> Bool
 isSubsequenceOf' sub ys = sub == (fst $ tuple ys)
@@ -25,6 +26,12 @@ splitOn c s = go c (reverse s) []
         go c (s:ss) (xs:xss)
           | c == s    = go c ss ([]:xs:xss)
           | otherwise = go c ss ((s:xs):xss)
+
+splitOn' :: Eq a => a -> [a] -> [[a]]
+splitOn' c s = go c (reverse s) []
+  where go _ []     xs       = xs
+        go c (s:ss) []       = go c ss (if c == s then [] else [[s]])
+        go c (s:ss) (xs:xss) = go c ss (if c == s then []:xs:xss else (s:xs):xss)
 
 capitalizeParagraph :: String -> String
 capitalizeParagraph = intercalate ". " . map (capitalizeWord . dropWhile isSpace) . splitOn '.'
