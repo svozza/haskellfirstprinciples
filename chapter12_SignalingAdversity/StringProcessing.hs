@@ -34,7 +34,7 @@ countTheBeforeVowel = go . words
                     
 
 isVowel :: Char -> Maybe Char
-isVowel c = bool Nothing (Just c) (c `elem` (vowels ++ (map toUpper vowels)))
+isVowel c = bool Nothing (Just c) ((toLower c) `elem` vowels)
   where vowels = "aeiou"
 
 getVowels :: String -> String
