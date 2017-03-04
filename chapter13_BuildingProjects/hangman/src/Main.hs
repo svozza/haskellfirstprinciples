@@ -21,6 +21,9 @@ minWordLength = 5
 maxWordLength :: Int
 maxWordLength = 9
 
+maxGuesses :: Int
+maxGuesses = 7
+
 gameWords :: IO WordList
 gameWords = do
   (WordList aw) <- allWords
@@ -41,7 +44,7 @@ data Puzzle = Puzzle String [Maybe Char] [Char]
 
 remainingGuesses :: [Maybe Char] -> [Char] -> Int
 remainingGuesses discovered guessed =
-  7 - (length $ guessed \\ (catMaybes discovered))
+  maxGuesses - (length $ guessed \\ (catMaybes discovered))
 
 instance Show Puzzle where
   show (Puzzle _ discovered guessed) =
