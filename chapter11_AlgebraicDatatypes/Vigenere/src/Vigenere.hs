@@ -1,4 +1,5 @@
-module Vigenere where
+module Vigenere (vigenere, unvigenere, toKeyword)
+  where
 
 import Data.Char
 import Data.List
@@ -6,10 +7,10 @@ import Cipher as C
 
 toKeyword :: String -> String -> (String, String)
 toKeyword kw = foldr (\c (x, y:ys) -> 
-                        if isLetter c
-                        then (y:x, ys ++ [y])
-                        else (c:x, y:ys))
-                     ("", (reverse kw))
+                       if isLetter c
+                       then (x ++ [y], ys ++ [y])
+                       else (x ++ [c], y:ys))
+                     ("", kw) 
 
 toTuple :: String -> String -> [(Char, Char)]
 toTuple kw s = zip s $ fst $ toKeyword kw s  
