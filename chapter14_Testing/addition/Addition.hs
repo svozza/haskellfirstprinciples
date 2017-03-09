@@ -1,6 +1,7 @@
 module Addition where
 
 import Test.Hspec
+import Test.QuickCheck
 
 dividedBy :: Integral a => a -> a -> (a, a)
 dividedBy num denom = go num denom 0
@@ -19,6 +20,52 @@ multipliedBy multiplicand multiplier
          | md == 0   = total
          | otherwise = go (md - 1) mr (total + mr)
         result       = go (abs multiplicand) (abs multiplier) 0
+
+oneThroughThree :: Gen Int
+oneThroughThree =elements [1, 2, 3]
+
+genBool :: Gen Bool
+genBool = choose (False, True)
+
+genBool' :: Gen Bool
+genBool' = elements [False, True]
+
+genOrdering :: Gen Ordering
+genOrdering = elements [LT, EQ, GT]
+
+genChar :: Gen Char
+genChar = elements ['a'..'z']
+
+genTuple :: (Arbitrary a, Arbitrary b) => Gen (a, b)
+genTuple = do
+  a <- arbitrary
+  b <- arbitrary
+  return (a, b)
+
+genThreeple :: (Arbitrary a, Arbitrary b, Arbitrary c) => 
+               Gen (a, b, c)
+genThreeple = do
+  a <- arbitrary
+  b <- arbitrary
+  c <- arbitrary
+  return (a, b, c)
+
+genEither :: (Arbitrary a, Arbitrary b) => Gen (Either a b)
+genEither = do
+  a <- arbitrary
+  b <- arbitrary
+  elements [Left a, Right b]
+
+genMaybe :: Arbitrary a => Gen (Maybe a)
+genMaybe = do
+  a <- arbitrary
+  elements [Nothing, Just a]
+
+genMaybe' :: Arbitrary a => Gen (Maybe a)
+genMaybe' = do
+  a <- arbitrary
+  frequency [ (1, return Nothing)
+            , (3, return (Just a))]
 
 main :: IO ()
 main = hspec $ do
@@ -43,3 +90,7 @@ main = hspec $ do
       multipliedBy (-5) 3 `shouldBe` (-15)
     it "-5 multiplied by -3 is 15" $ do
       multipliedBy (-5) (-3) `shouldBe` 15
+
+  describe "Property tests" $ do
+    it "x + 1 is always greater than x" $ do
+      property $ \x -> x + 1 > (x :: Int)
