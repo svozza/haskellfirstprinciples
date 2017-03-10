@@ -1,0 +1,32 @@
+name:                WordNumber
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/svozza/haskellfirstprinciples 
+license:             BSD3
+license-file:        LICENSE
+author:              Stefano Vozza
+maintainer:          svozza@example.com
+copyright:           2017 Author name here
+category:            Text
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     WordNumber
+  ghc-options:         -Wall -fwarn-tabs
+  build-depends:       base >= 4.7 && < 5
+                     , hspec
+  default-language:    Haskell2010
+
+test-suite test 
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             WordNumberTest.hs
+  build-depends:       base
+                     , hspec
+                     , WordNumber
+  ghc-options:         -Wall -fwarn-tabs
+  default-language:    Haskell2010
