@@ -20,9 +20,17 @@ listOrdered xs =
 prop_listOrdered :: Ord a => [a] -> Bool
 prop_listOrdered = listOrdered . sort
 
+plusAssociative x y z =
+  x + (y + z) == (x + y) + z
+
+plusCommutative x y =
+  x + y == y + x
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
   quickCheck (prop_halfIdentity :: Float -> Bool)
   quickCheck (prop_listOrdered :: [Int] -> Bool)
   quickCheck (prop_listOrdered :: String -> Bool)
+  quickCheck (plusAssociative :: Int -> Int -> Int -> Bool)
+  quickCheck (plusCommutative :: Int -> Int  -> Bool)
