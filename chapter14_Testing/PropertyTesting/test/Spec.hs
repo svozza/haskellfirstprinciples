@@ -20,11 +20,21 @@ listOrdered xs =
 prop_listOrdered :: Ord a => [a] -> Bool
 prop_listOrdered = listOrdered . sort
 
+plusAssociative :: (Eq a, Num a) => a -> a -> a -> Bool
 plusAssociative x y z =
   x + (y + z) == (x + y) + z
 
+plusCommutative :: (Eq a, Num a) => a -> a -> Bool
 plusCommutative x y =
   x + y == y + x
+
+multAssociative :: (Eq a, Num a) => a -> a -> a -> Bool
+multAssociative x y z =
+  x * (y * z) == (x * y) * z
+
+multCommutative :: (Eq a, Num a) => a -> a -> Bool
+multCommutative x y =
+  x * y == y * x
 
 main :: IO ()
 main = do
@@ -34,3 +44,5 @@ main = do
   quickCheck (prop_listOrdered :: String -> Bool)
   quickCheck (plusAssociative :: Int -> Int -> Int -> Bool)
   quickCheck (plusCommutative :: Int -> Int  -> Bool)
+  quickCheck (multAssociative :: Integer -> Integer -> Integer -> Bool)
+  quickCheck (multCommutative :: Integer -> Integer -> Bool)
