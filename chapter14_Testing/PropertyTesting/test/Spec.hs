@@ -38,6 +38,10 @@ multAssociative = associative (*)
 
 multCommutative = commutative (*)
 
+powCommutative  = commutative (^)
+
+powAssociative  = associative (^)
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
