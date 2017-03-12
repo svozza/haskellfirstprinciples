@@ -42,6 +42,9 @@ powCommutative  = commutative (^)
 
 powAssociative  = associative (^)
 
+prop_reverse :: Eq a => [a] -> Bool
+prop_reverse xs = reverse (reverse xs) == id xs
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
@@ -52,3 +55,4 @@ main = do
   quickCheck (plusCommutative :: Int -> Int  -> Bool)
   quickCheck (multAssociative :: Integer -> Integer -> Integer -> Bool)
   quickCheck (multCommutative :: Integer -> Integer -> Bool)
+  quickCheck (prop_reverse :: String -> Bool)
