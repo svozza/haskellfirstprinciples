@@ -1,4 +1,6 @@
 import Test.QuickCheck
+import Test.QuickCheck.Function
+import Text.Show.Functions
 
 import Data.List (sort)
 
@@ -20,21 +22,21 @@ listOrdered xs =
 prop_listOrdered :: Ord a => [a] -> Bool
 prop_listOrdered = listOrdered . sort
 
-plusAssociative :: (Eq a, Num a) => a -> a -> a -> Bool
-plusAssociative x y z =
-  x + (y + z) == (x + y) + z
+associative :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
+associative f x y z =
+  x `f` (y `f` z) == (x `f` y) `f` z
 
-plusCommutative :: (Eq a, Num a) => a -> a -> Bool
-plusCommutative x y =
-  x + y == y + x
+commutative :: Eq a => (a -> a -> a) -> a -> a -> Bool
+commutative f x y =
+  x `f` y == y `f` x
 
-multAssociative :: (Eq a, Num a) => a -> a -> a -> Bool
-multAssociative x y z =
-  x * (y * z) == (x * y) * z
+plusAssociative = associative (+)
 
-multCommutative :: (Eq a, Num a) => a -> a -> Bool
-multCommutative x y =
-  x * y == y * x
+plusCommutative = commutative (+)
+
+multAssociative = associative (*)
+
+multCommutative = commutative (*)
 
 main :: IO ()
 main = do
