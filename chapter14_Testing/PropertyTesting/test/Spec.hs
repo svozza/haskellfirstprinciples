@@ -52,6 +52,14 @@ prop_compose :: (Eq a, Eq b, Eq c) => (b -> c) -> (a -> b) -> a -> Bool
 prop_compose f g x =
   (f . g) x == f (g x)
 
+prop_plusplus :: Eq a => [a] -> [a] -> Bool
+prop_plusplus xs ys =
+  foldr (:) xs ys == (++) xs ys
+
+prop_concat :: Eq a => [[a]] -> Bool
+prop_concat xss =  
+  foldr (++) [] xss == concat xss
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
@@ -65,3 +73,5 @@ main = do
   quickCheck (prop_reverse :: String -> Bool)
   quickCheck (prop_dollar :: (Int -> Char) -> Int -> Bool)
   quickCheck (prop_compose :: (Char -> String) -> (Int -> Char) -> Int -> Bool)
+  --quickCheck (prop_plusplus :: [Int] -> [Int] -> Bool) Not equivalent
+  quickCheck (prop_concat :: [String] -> Bool)
