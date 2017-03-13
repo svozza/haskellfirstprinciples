@@ -45,6 +45,13 @@ powAssociative  = associative (^)
 prop_reverse :: Eq a => [a] -> Bool
 prop_reverse xs = reverse (reverse xs) == id xs
 
+prop_dollar :: (Eq a, Eq b) => (a -> b) -> a -> Bool
+prop_dollar f a = (f $ a) == f a
+
+prop_compose :: (Eq a, Eq b, Eq c) => (b -> c) -> (a -> b) -> a -> Bool
+prop_compose f g x =
+  (f . g) x == f (g x)
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
@@ -56,3 +63,5 @@ main = do
   quickCheck (multAssociative :: Integer -> Integer -> Integer -> Bool)
   quickCheck (multCommutative :: Integer -> Integer -> Bool)
   quickCheck (prop_reverse :: String -> Bool)
+  quickCheck (prop_dollar :: (Int -> Char) -> Int -> Bool)
+  quickCheck (prop_compose :: (Char -> String) -> (Int -> Char) -> Int -> Bool)
