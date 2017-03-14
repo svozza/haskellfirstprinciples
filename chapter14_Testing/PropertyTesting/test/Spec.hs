@@ -4,7 +4,7 @@ import Text.Show.Functions
 
 import Data.List (sort)
 
-import Lib
+import Lib (half, f)
 
 halfIdentity :: Fractional a => a -> a
 halfIdentity = (2*) . half
@@ -38,6 +38,17 @@ multAssociative = associative (*)
 
 multCommutative = commutative (*)
 
+nonZeroInt :: Gen Int
+nonZeroInt = suchThat arbitrary (/=0)
+
+prop_quotRem :: Integral a => a -> a -> Bool
+prop_quotRem x y =
+  ((quot x y) * y) + (rem x y) == x
+
+prop_divMod :: Integral a => a -> a -> Bool
+prop_divMod x y =
+  ((div x y) * y) + (mod x y) == x
+
 powCommutative  = commutative (^)
 
 powAssociative  = associative (^)
@@ -70,6 +81,8 @@ main = do
   quickCheck (plusCommutative :: Int -> Int  -> Bool)
   quickCheck (multAssociative :: Integer -> Integer -> Integer -> Bool)
   quickCheck (multCommutative :: Integer -> Integer -> Bool)
+  quickCheck (forAll nonZeroInt $ \x -> forAll nonZeroInt $ \y -> prop_quotRem x y)
+  quickCheck (forAll nonZeroInt $ \x -> forAll nonZeroInt $ \y -> prop_divMod x y)
   quickCheck (prop_reverse :: String -> Bool)
   quickCheck (prop_dollar :: (Int -> Char) -> Int -> Bool)
   quickCheck (prop_compose :: (Char -> String) -> (Int -> Char) -> Int -> Bool)
