@@ -74,6 +74,9 @@ prop_concat xss =
 prop_f :: Eq a => Int -> [a] -> Bool
 prop_f n xs = f n xs == n
 
+prop_read :: (Eq a, Read a, Show a) => a -> Bool
+prop_read x = (read (show x)) == x
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
@@ -92,3 +95,4 @@ main = do
   --quickCheck (prop_plusplus :: [Int] -> [Int] -> Bool) Not equivalent
   quickCheck (prop_concat :: [String] -> Bool)
   --quickCheck (prop_f :: Int -> [Float] -> Bool) Fails for negtive numbers
+  quickCheck (prop_read :: Float -> Bool)
