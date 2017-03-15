@@ -2,10 +2,9 @@ import Test.QuickCheck
 import Test.QuickCheck.Function
 import Text.Show.Functions
 
-import Data.Char (toUpper)
 import Data.List (sort)
 
-import Lib (half, f, square)
+import Lib (half, f, square, twice, fourTimes, capitalizeWord)
 
 halfIdentity :: Fractional a => a -> a
 halfIdentity = (2*) . half
@@ -85,6 +84,16 @@ prop_squareIdentity :: (Eq a, Floating a) => a -> Bool
 prop_squareIdentity n =
   squareIdentity n == n 
 
+prop_capitalize :: String -> Bool
+prop_capitalize x =
+  (capitalizeWord x == twice capitalizeWord x) == 
+  (twice capitalizeWord x == fourTimes capitalizeWord x)
+ 
+prop_sort :: (Eq a, Ord a) => [a] -> Bool
+prop_sort xs =
+  (sort xs == twice sort xs) ==
+  (twice sort xs == fourTimes sort xs)
+ 
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
@@ -105,3 +114,5 @@ main = do
   --quickCheck (prop_f :: Int -> [Float] -> Bool) Fails for negtive numbers
   quickCheck (prop_read :: Float -> Bool)
   --quickCheck (prop_squareIdentity :: Double -> Bool) Fails due to floating point rounding
+  quickCheck (prop_capitalize)
+  quickCheck (prop_sort :: String -> Bool)
