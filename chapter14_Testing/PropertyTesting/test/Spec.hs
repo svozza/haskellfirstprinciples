@@ -2,9 +2,10 @@ import Test.QuickCheck
 import Test.QuickCheck.Function
 import Text.Show.Functions
 
+import Data.Char (toUpper)
 import Data.List (sort)
 
-import Lib (half, f)
+import Lib (half, f, square)
 
 halfIdentity :: Fractional a => a -> a
 halfIdentity = (2*) . half
@@ -77,6 +78,13 @@ prop_f n xs = f n xs == n
 prop_read :: (Eq a, Read a, Show a) => a -> Bool
 prop_read x = (read (show x)) == x
 
+squareIdentity :: Floating a => a -> a
+squareIdentity = square . sqrt
+
+prop_squareIdentity :: (Eq a, Floating a) => a -> Bool
+prop_squareIdentity n =
+  squareIdentity n == n 
+
 main :: IO ()
 main = do
   quickCheck (prop_halfIdentity :: Double -> Bool)
@@ -96,3 +104,4 @@ main = do
   quickCheck (prop_concat :: [String] -> Bool)
   --quickCheck (prop_f :: Int -> [Float] -> Bool) Fails for negtive numbers
   quickCheck (prop_read :: Float -> Bool)
+  --quickCheck (prop_squareIdentity :: Double -> Bool) Fails due to floating point rounding
