@@ -1,4 +1,5 @@
-module Cipher where
+module Cipher (caesar, uncaesar, toAlphaNum)
+  where
 
 import Data.Char
 
@@ -6,7 +7,7 @@ toAlphaNum c
   | isUpper c = (ord c) - 65
   | otherwise = (ord c) - 97
 
-toUnicode c n
+toAscii c n
   | isUpper c = chr (n + 65)
   | otherwise = chr (n + 97)
 
@@ -21,12 +22,15 @@ shiftL shift n
   | otherwise       = n - shift
 
 shift :: (Int -> Int -> Int) -> Int -> Char -> Char
-shift shifter n c = ((toUnicode c) . shifter n . toAlphaNum) c
+shift shifter n c = ((toAscii c) . shifter n . toAlphaNum) c
+
+isAsciiLetter :: Char -> Bool
+isAsciiLetter c = isAscii c && isLetter c
 
 shiftLetter :: (Int -> Int -> Int) -> Int -> Char -> Char
 shiftLetter shifter n c
-  | isLetter c = shift shifter n c
-  | otherwise  = c
+  | isAsciiLetter c = shift shifter n c
+  | otherwise       = c
 
 shiftLetterR = shiftLetter shiftR
 shiftLetterL = shiftLetter shiftL

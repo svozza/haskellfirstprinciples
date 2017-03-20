@@ -5,9 +5,12 @@ import Data.Char
 import Data.List
 import Cipher as C
 
+isAsciiLetter :: Char -> Bool
+isAsciiLetter c = isAscii c && isLetter c
+
 toKeyword :: String -> String -> (String, String)
 toKeyword kw = foldr (\c (x, y:ys) -> 
-                       if isLetter c
+                       if isAsciiLetter c
                        then (x ++ [y], ys ++ [y])
                        else (x ++ [c], y:ys))
                      ("", kw) 
@@ -29,8 +32,10 @@ encrypt = encodeLetter C.caesar
 decrypt = encodeLetter C.uncaesar
 
 encode :: ((Char, Int) -> Char) -> String -> String -> String
+encode _ "" s = s
+encode _ _ "" = "" 
 encode f kw s = map f $ cipherTuples kw s
 
-vigenere = encode encrypt
+vigenere = encode encrypt . filter isAsciiLetter
 
-unvigenere = encode decrypt
+unvigenere = encode decrypt . filter isAsciiLetter
