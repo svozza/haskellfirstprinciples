@@ -9,7 +9,7 @@ isAsciiLetter :: Char -> Bool
 isAsciiLetter c = isAscii c && isLetter c
 
 toKeyword :: String -> String -> (String, String)
-toKeyword kw = foldr (\c (x, y:ys) -> 
+toKeyword kw = foldl' (\(x, y:ys) c -> 
                        if isAsciiLetter c
                        then (x ++ [y], ys ++ [y])
                        else (x ++ [c], y:ys))
